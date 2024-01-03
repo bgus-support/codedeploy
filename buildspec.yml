@@ -1,15 +1,16 @@
+#new changes
+#This is my buildspec.yml file
 version: 0.2
 
 phases:
-  install: 
-    runtime-versions:
-      nodejs: 10
   build:
     commands:
-      - echo "Package & Dependicies are getting installed"
-      - npm -f install
-      - echo "Packages have been installed"
-      - echon "Storing Build Artifact to the Location"
+    - echo "This is build phase... Zipping my lambda function"
+    - zip -r deployment_package.zip lambda_function.py
+  post_build:
+    commands:
+    - echo "Deploying to the Lambda"
+    - aws lambda update-function-code --function-name  hello_world --zip-file fileb://deployment_package.zip
 artifacts:
   type: zip
   paths:
